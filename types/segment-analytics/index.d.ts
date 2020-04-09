@@ -9,11 +9,120 @@ declare interface JQuery {}
 
 declare namespace SegmentAnalytics {
 
+  // reserved keys of the 'trait' field under the 'context' key
+  // @see https://segment.com/docs/connections/spec/identify/#traits
+  interface TraitOptions {
+    address?: {
+      city?;
+      country?;
+      postalCode?;
+      state?;
+      street?;
+    };
+    age?: number;
+    avatar?: string;
+    birthday?: Date;
+    company?: {
+      name?: string;
+      id?: number | string;
+      industry?: string;
+      employee_count?: number;
+      plan?: string;
+    };
+    createdAt?: Date;
+    description?: string;
+    email?: string;
+    firstName?: string;
+    gender?: string;
+    id?: string;
+    lastName?: string;
+    name?: string;
+    phone?: string;
+    username?: string;
+    website?: string;
+    [key: string]: any; // arbitrary key:value pairs are also permitted
+  }
+
+  // reserved keys for the 'context' field of SegmentOpts
+  // NOTE: some fields may be automatically set by Segment
+  // @see https://segment.com/docs/connections/spec/common/#context
+  interface ContextOptions {
+    active?: boolean;
+    app?: {
+      name?;
+      version?;
+      build?;
+    };
+    campaign?: {
+      name?;
+      source?;
+      medium?;
+      term?;
+      content?;
+    };
+    device?: {
+      id?;
+      advertisingId?;
+      manufacturer?;
+      model?;
+      name?;
+      type?;
+      version?;
+    };
+    ip?: string;
+    library?: {
+      name?;
+      version?;
+    }
+    locale?: string;
+    location?: {
+      city?;
+      country?;
+      latitude?;
+      longitude?;
+      region?;
+      speed?;
+    }
+    network?: {
+      bluetooth?;
+      carrier?;
+      cellular?;
+      wifi?;
+    }
+    os?: {
+      name?;
+      version?;
+    }
+    page?: {
+      hash?: string;
+      path?: string;
+      referrer?: string;
+      search?: string;
+      title?: string;
+      url?: string;
+    }
+    referrer?: {
+      type?: string;
+      name?: string;
+      url?: string;
+      link?: string;
+    };
+    screen?: {
+      density?;
+      height?;
+      width?;
+    }
+    timezone?: string;
+    groupId?: string;
+    traits?: TraitOptions;
+    userAgent?: string;
+  }
+
   // Generic options object with integrations
   interface SegmentOpts {
     integrations?: any;
     anonymousId?: string;
-    context?: object;
+    context?: ContextOptions;
   }
 
   interface CookieOptions {
@@ -94,7 +203,7 @@ declare namespace SegmentAnalytics {
        an object with an integrations dictionary, which used to load
        only the integrations that are marked as enabled with the boolean value true.
        works in version 4.1.0 or higher */
-   load(writeKey: string, options?: SegmentOpts): void;
+    load(writeKey: string, options?: SegmentOpts): void;
 
     /* The identify method is how you tie one of your users and their actions
        to a recognizable userId and traits. */
